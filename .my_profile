@@ -1,0 +1,37 @@
+#!/bin/sh
+
+export NVM_DIR="$HOME/.nvm"
+export GPG_TTY=$(tty)
+
+[ -s "/usr/local/opt/nvm/nvm.sh" ] && . "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
+  [ -s "/usr/local/opt/nvm/etc/bash_completion.d/nvm" ] && . "/usr/local/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
+
+alias edit-profile="vim ~/.my_profile; source ~/.my_profile"
+alias git-prune='git fetch --prune; git branch --merged master | grep -v "\* master" | xargs -n 1 git branch -d'
+alias git-amend='git commit --amend --no-edit'
+alias git-add-amend='git commit -a --amend --no-edit'
+alias git-fix='git commit -a -m "fix"'
+alias git-rebase='git rebase -i master'
+alias git-push='git push -u origin HEAD'
+alias git-undo-commit='git reset --soft HEAD~1; git reset'
+alias git-master='git checkout master; git pull'
+alias docker-stop-all='docker kill $(docker ps -q)'
+alias docker-rm-stopped='docker rm $(docker ps -a -q)'
+alias docker-rm-volumes='docker volume rm `(docker volume ls -qf dangling=true)`'
+alias docker-rm-images='docker rmi $(docker images -f dangling=true -q)'
+alias maven-verify='./mvnw clean verify'
+alias maven-docker='./mvnw docker:start'
+alias gradle-build='./gradlew clean build'
+alias java8='sdk use java 8.0.252.j9-adpt'
+alias java11='sdk use java 11'
+alias java17='sdk use java 17.0.2-tem'
+alias python=python3
+alias ip-show='ip -4 route get 8.8.8.8 | awk '\''{print $7}'\'''
+
+gen_pass () {
+  cat /dev/urandom | LC_CTYPE=C tr -dc 'a-zA-Z0-9-#' | fold -w ${1-32} | head -n 1;
+}
+
+port () {
+  lsof -nP -i4TCP:$1 | grep LISTEN
+}
